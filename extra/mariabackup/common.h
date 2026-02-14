@@ -37,7 +37,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1335  USA
 #endif
 
 #ifndef HAVE_VASPRINTF
-static inline int vasprintf(char **strp, const char *fmt, va_list args)
+static inline int mariadb_vasprintf(char **strp, const char *fmt, va_list args)
 {
   int len;
 #ifdef _MSC_VER
@@ -62,7 +62,7 @@ static inline int asprintf(char **strp, const char *fmt,...)
 {
   va_list	args;
   va_start(args, fmt);
-  int len = vasprintf(strp, fmt, args);
+  int len = mariadb_vasprintf(strp, fmt, args);
   va_end(args);
   return len;
 }
@@ -92,7 +92,7 @@ static inline int msg1(uint thread_num, const char *prefix, const char *fmt, va_
   char date[100];
   char *line;
   strftime(date, sizeof(date), "%Y-%m-%d %H:%M:%S", localtime(&t));
-  result = vasprintf(&line, fmt, args);
+  result = mariadb_vasprintf(&line, fmt, args);
   if (result != -1) {
     if (fmt && fmt[strlen(fmt)] != '\n')
       result = fprintf(stderr, "[%02u] %s%s %s\n", thread_num, prefix, date, line);
