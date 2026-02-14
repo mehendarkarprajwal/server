@@ -18,7 +18,7 @@ this program; if not, write to the Free Software Foundation, Inc.,
 
 #pragma once
 
-#if defined __powerpc64__
+#if defined __powerpc64__ && !defined __clang__
 #elif defined __s390__
 #elif defined _MSC_VER && (defined _M_IX86 || defined _M_X64) && !defined(__clang__)
 #elif defined __GNUC__ && (defined __i386__ || defined __x86_64__)

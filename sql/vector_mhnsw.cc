@@ -298,14 +298,16 @@ struct FVector
       vector short y= vec_ld(0, &v2[i]);
 
       // Vectorized multiplication using vec_mule() and vec_mulo()
-      vector int product_hi= vec_mule(x, y);
-      vector int product_lo= vec_mulo(x, y);
+      vector signed int product_hi= vec_mule(x, y);
+      vector signed int product_lo= vec_mulo(x, y);
 
       // Extend vector int to vector long long for accumulation
-      vector long long llhi1= vec_unpackh(product_hi);
-      vector long long llhi2= vec_unpackl(product_hi);
-      vector long long lllo1= vec_unpackh(product_lo);
-      vector long long lllo2= vec_unpackl(product_lo);
+      // Use vec_unpackh/vec_unpackl on short, then convert to long long
+      // Or use direct element access and construction
+      vector long long llhi1= {product_hi[0], product_hi[1]};
+      vector long long llhi2= {product_hi[2], product_hi[3]};
+      vector long long lllo1= {product_lo[0], product_lo[1]};
+      vector long long lllo2= {product_lo[2], product_lo[3]};
 
       ll_sum+= llhi1 + llhi2 + lllo1 + lllo2;
     }
